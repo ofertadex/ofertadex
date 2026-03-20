@@ -173,7 +173,7 @@ buscaInput.addEventListener('input', () => {
 });
 
 /* ── carrega JSON ── */
-fetch('produtos.json')
+fetch('https://opensheet.elk.sh/1tD4G3BqFdVzh5ZkZPUIP1V-HCI__j_WPGdSFqmi7n64/Publicados')
   .then(r => {
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     return r.json();
