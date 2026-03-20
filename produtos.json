@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "asin": "B07HDSL78H",
+    "titulo": "Orfeu Café Clássico em Grãos, 100% Arabica, Torra Média, 1kg",
+    "categoria": "Alimentos",
+    "preco_cent": 13910,
+    "imagem_url": "https://m.media-amazon.com/images/I/51mMS+Qpi1L._AC_SL1000_.jpg",
+    "affiliate_url": "https://amzn.to/3PgSfIt",
+    "published_at": "2026-03-20T17:30:00"
+  },
+  {
+    "asin": "B0FF89PVB1",
+    "titulo": "Café Gourmet Appassionato Em Grãos Expresso 100% Arábica - 1kg",
+    "categoria": "Alimentos",
+    "preco_cent": 8990,
+    "imagem_url": "https://m.media-amazon.com/images/I/41igtwCjsYL._AC_SL1080_.jpg",
+    "affiliate_url": "https://amzn.to/xyz123",
+    "published_at": "2026-03-20T16:00:00"
+  }
+]

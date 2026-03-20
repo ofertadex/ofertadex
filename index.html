@@ -1,226 +1,77 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ofertadex — Melhores Ofertas Amazon</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f5f5f5; color: #1a1a1a; display: flex; flex-direction: column; min-height: 100vh; }
-  .header { background: #fff; border-bottom: 1px solid #eee; padding: 1.25rem 1rem 1rem; text-align: center; }
-  .logo-wrap { display: flex; justify-content: center; margin-bottom: 0.5rem; }
-  .logo-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; }
-  .bio { font-size: 14px; color: #666; margin-bottom: 0.75rem; }
-  .social { display: flex; gap: 12px; justify-content: center; margin-bottom: 1rem; }
-  .social a { font-size: 13px; color: #FF6B35; text-decoration: none; font-weight: 500; }
-  .search-wrap { max-width: 480px; margin: 0 auto; position: relative; }
-  .search-input { width: 100%; padding: 10px 16px 10px 40px; border: 1.5px solid #ddd; border-radius: 24px; font-size: 14px; outline: none; background: #f9f9f9; transition: border-color 0.15s; }
-  .search-input:focus { border-color: #FF6B35; background: #fff; }
-  .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: #aaa; }
-  .search-clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #aaa; font-size: 18px; display: none; padding: 0 4px; }
-  .filters-wrap { background: #fff; border-bottom: 1px solid #eee; padding: 0.75rem 1rem; overflow-x: auto; }
-  .filters { display: flex; gap: 8px; min-width: max-content; margin: 0 auto; max-width: 600px; }
-  .filter-btn { padding: 6px 16px; border-radius: 20px; border: 1.5px solid #ddd; background: #fff; font-size: 13px; cursor: pointer; color: #555; white-space: nowrap; font-weight: 500; transition: all 0.15s; flex-shrink: 0; }
-  .filter-btn.active { background: #FF6B35; border-color: #FF6B35; color: #fff; }
-  .toolbar { max-width: 600px; margin: 0 auto; padding: 0.75rem 1rem 0.25rem; display: flex; align-items: center; justify-content: space-between; }
-  .result-count { font-size: 13px; color: #888; }
-  .main { flex: 1; }
-  .container { max-width: 600px; margin: 0 auto; padding: 0.5rem 1rem 2rem; }
-  .grid { display: flex; flex-direction: column; gap: 10px; }
-  .card { background: #fff; border-radius: 12px; border: 1px solid #eee; padding: 14px; display: flex; gap: 14px; align-items: center; text-decoration: none; color: inherit; transition: border-color 0.15s; }
-  .card:hover { border-color: #FF6B35; }
-  .card-img { width: 72px; height: 72px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: #f5f5f5; }
-  .card-info { flex: 1; min-width: 0; }
-  .card-cat { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
-  .card-title { font-size: 14px; font-weight: 600; margin-bottom: 5px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-  .card-title mark { background: #FFF3CD; color: inherit; border-radius: 2px; }
-  .card-price { font-size: 17px; font-weight: 700; color: #FF6B35; }
-  .card-date { font-size: 11px; color: #aaa; margin-top: 3px; }
-  .badge-new { display: inline-block; background: #FFF0E8; color: #FF6B35; font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 700; margin-left: 6px; vertical-align: middle; }
-  .card-arrow { color: #ccc; font-size: 20px; flex-shrink: 0; }
-  .loader { text-align: center; padding: 1.5rem; }
-  .loader-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #FF6B35; margin: 0 3px; animation: bounce 0.8s infinite alternate; }
-  .loader-dot:nth-child(2) { animation-delay: 0.2s; }
-  .loader-dot:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes bounce { from { transform: translateY(0); opacity: 0.6; } to { transform: translateY(-8px); opacity: 1; } }
-  .end-msg { text-align: center; padding: 1.5rem; font-size: 13px; color: #bbb; }
-  .footer { text-align: center; padding: 1.25rem; font-size: 12px; color: #bbb; border-top: 1px solid #eee; background: #fff; margin-top: auto; }
-  .no-results { text-align: center; padding: 3rem 1rem; }
-  .no-results p { color: #aaa; font-size: 15px; margin-bottom: 0.5rem; }
-  .no-results small { color: #ccc; font-size: 13px; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OfertaDex — As Melhores Promos</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div class="header">
-  <div class="logo-wrap">
-    <img class="logo-img" src="data:image/jpeg;base64,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" alt="Ofertadex" />
-  </div>
-  <p class="bio">Melhores ofertas da Amazon todo dia 🔥</p>
-  <div class="social">
-    <a href="https://instagram.com/ofertadex" target="_blank">📸 Instagram</a>
-    <a href="https://facebook.com/ofertadex1" target="_blank">👍 Facebook</a>
-  </div>
-  <div class="search-wrap">
-    <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="text" class="search-input" id="search" placeholder="Buscar produto..." oninput="onSearch(this.value)" autocomplete="off">
-    <button class="search-clear" id="searchClear" onclick="clearSearch()">×</button>
-  </div>
-</div>
-
-<div class="filters-wrap">
-  <div class="filters" id="filters"></div>
-</div>
-
-<div class="toolbar">
-  <span class="result-count" id="resultCount"></span>
-</div>
-
-<div class="main">
-  <div class="container">
-    <div class="grid" id="grid"></div>
-    <div class="loader" id="loader" style="display:none">
-      <span class="loader-dot"></span><span class="loader-dot"></span><span class="loader-dot"></span>
-    </div>
-    <div class="end-msg" id="endMsg" style="display:none">Você chegou ao fim — todos os produtos foram carregados ✓</div>
-    <div class="no-results" id="noResults" style="display:none">
-      <p>Nenhum produto encontrado</p>
-      <small>Tente outro termo ou categoria</small>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="topbar-slogan">
+      Melhores ofertas da Amazon todo dia
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="#f26522"><path d="M12 2C9 7 4 9 4 14a8 8 0 0 0 16 0c0-5-5-7-8-12z"/></svg>
+    </span>
+    <div class="topbar-social">
+      <a class="ig" href="https://www.instagram.com/ofertadex" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+        Instagram
+      </a>
+      <a class="fb" href="https://www.facebook.com/ofertadex1" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+        </svg>
+        Facebook
+      </a>
     </div>
   </div>
 </div>
 
-<div class="footer">ofertadex.github.io — Atualizado automaticamente</div>
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <span class="logo-name">Oferta<span>Dex</span></span>
+      <span class="logo-tag">As Melhores Promos</span>
+    </a>
+    <div class="search-wrap">
+      <input
+        type="search"
+        id="busca"
+        placeholder="Buscar produtos..."
+        autocomplete="off"
+        aria-label="Buscar produtos"
+      />
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    </div>
+  </div>
+</header>
 
-<script>
-const PAGE_SIZE = 50;
-let todos = [];
-let filtrados = [];
-let paginaAtual = 0;
-let carregando = false;
-let catAtiva = "Todos";
-let buscaAtiva = "";
+<div class="filter-bar">
+  <div class="filter-inner" id="filter-bar">
+    <button class="pill active" data-cat="">Todos</button>
+  </div>
+</div>
 
-async function init() {
-  try {
-    const r = await fetch("produtos.json?t=" + Date.now());
-    todos = await r.json();
-    todos.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
-    renderFiltros();
-    aplicarFiltros();
-  } catch(e) {
-    document.getElementById("noResults").style.display = "block";
-  }
-}
+<main>
+  <div class="bar-top">
+    <p class="results-info" id="results-info"></p>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
 
-function renderFiltros() {
-  const cats = ["Todos", ...new Set(todos.map(p => p.categoria).filter(Boolean))];
-  document.getElementById("filters").innerHTML = cats.map(c =>
-    "<button class='filter-btn " + (c === catAtiva ? "active" : "") + "' onclick='selecionarCat("" + c + "")'> " + c + "</button>"
-  ).join("");
-}
+<footer>
+  OfertaDex &mdash; Links de afiliado Amazon. Os preços podem variar.
+</footer>
 
-function selecionarCat(cat) {
-  catAtiva = cat;
-  renderFiltros();
-  aplicarFiltros();
-}
-
-function onSearch(val) {
-  buscaAtiva = val.trim().toLowerCase();
-  document.getElementById("searchClear").style.display = buscaAtiva ? "block" : "none";
-  aplicarFiltros();
-}
-
-function clearSearch() {
-  document.getElementById("search").value = "";
-  onSearch("");
-}
-
-function aplicarFiltros() {
-  filtrados = todos.filter(p => {
-    const matchCat = catAtiva === "Todos" || p.categoria === catAtiva;
-    const matchBusca = !buscaAtiva || p.titulo.toLowerCase().includes(buscaAtiva);
-    return matchCat && matchBusca;
-  });
-  paginaAtual = 0;
-  document.getElementById("grid").innerHTML = "";
-  document.getElementById("endMsg").style.display = "none";
-  document.getElementById("noResults").style.display = filtrados.length === 0 ? "block" : "none";
-  atualizarCount();
-  carregarPagina();
-}
-
-function atualizarCount() {
-  const total = filtrados.length;
-  if (total === 0) { document.getElementById("resultCount").textContent = ""; return; }
-  document.getElementById("resultCount").textContent = total + (total === 1 ? " produto" : " produtos");
-}
-
-function highlight(text, termo) {
-  if (!termo) return text;
-  const re = new RegExp("(" + termo.replace(/[.*+?^${}()|[\]\\/g, "\\$&") + ")", "gi");
-  return text.replace(re, "<mark>$1</mark>");
-}
-
-function diasAtras(dateStr) {
-  if (!dateStr) return "";
-  const diff = Math.floor((Date.now() - new Date(dateStr)) / 86400000);
-  if (diff === 0) return "Hoje";
-  if (diff === 1) return "Ontem";
-  if (diff < 7) return diff + " dias atrás";
-  if (diff < 30) return Math.floor(diff / 7) + " sem. atrás";
-  return Math.floor(diff / 30) + " mes. atrás";
-}
-
-function carregarPagina() {
-  if (carregando) return;
-  const inicio = paginaAtual * PAGE_SIZE;
-  const slice = filtrados.slice(inicio, inicio + PAGE_SIZE);
-  if (slice.length === 0) return;
-  carregando = true;
-  document.getElementById("loader").style.display = "block";
-  setTimeout(() => {
-    const grid = document.getElementById("grid");
-    slice.forEach((p, i) => {
-      const idx = inicio + i;
-      const isNovo = diasAtras(p.published_at) === "Hoje" && idx === 0;
-      const titulo = highlight(p.titulo, buscaAtiva);
-      const card = document.createElement("a");
-      card.className = "card";
-      card.href = p.affiliate_url;
-      card.target = "_blank";
-      card.rel = "noopener";
-      card.innerHTML =
-        "<img class='card-img' src='" + p.imagem_url + "' alt='" + p.titulo + "' loading='lazy' onerror='this.src="https://placehold.co/72x72/f5f5f5/aaa?text=IMG"' />" +
-        "<div class='card-info'>" +
-          "<p class='card-cat'>" + (p.categoria || "Oferta") + "</p>" +
-          "<p class='card-title'>" + titulo + (isNovo ? "<span class='badge-new'>NOVO</span>" : "") + "</p>" +
-          "<p class='card-price'>R$ " + (p.preco_cent / 100).toFixed(2).replace(".", ",") + "</p>" +
-          "<p class='card-date'>" + diasAtras(p.published_at) + "</p>" +
-        "</div>" +
-        "<span class='card-arrow'>›</span>";
-      grid.appendChild(card);
-    });
-    paginaAtual++;
-    carregando = false;
-    document.getElementById("loader").style.display = "none";
-    atualizarCount();
-    if (paginaAtual * PAGE_SIZE >= filtrados.length && filtrados.length > PAGE_SIZE) {
-      document.getElementById("endMsg").style.display = "block";
-    }
-  }, 300);
-}
-
-function onScroll() {
-  if (carregando) return;
-  if (paginaAtual * PAGE_SIZE >= filtrados.length) return;
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) carregarPagina();
-}
-
-window.addEventListener("scroll", onScroll, { passive: true });
-init();
-</script>
+<script src="script.js"></script>
 </body>
 </html>
