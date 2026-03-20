@@ -179,8 +179,8 @@ fetch('https://opensheet.elk.sh/1tD4G3BqFdVzh5ZkZPUIP1V-HCI__j_WPGdSFqmi7n64/Pub
     return r.json();
   })
   .then(data => {
-    todosProdutos = data;
-    buildCategorias(data);
+    todosProdutos = data.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+    buildCategorias(todosProdutos);
     resetGrid();
   })
   .catch(err => {
