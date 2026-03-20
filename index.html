@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ofertadex — Melhores Ofertas Amazon</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #1a1a1a; }
+  .header { background: #fff; border-bottom: 1px solid #eee; padding: 1.5rem 1rem; text-align: center; }
+  .avatar { width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 0.75rem; background: #FF6B35; display: flex; align-items: center; justify-content: center; font-size: 32px; }
+  .avatar img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; }
+  h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .bio { font-size: 14px; color: #666; margin-bottom: 1rem; }
+  .social { display: flex; gap: 12px; justify-content: center; }
+  .social a { font-size: 13px; color: #FF6B35; text-decoration: none; font-weight: 500; }
+  .filters { background: #fff; padding: 1rem; display: flex; gap: 8px; overflow-x: auto; justify-content: center; flex-wrap: wrap; border-bottom: 1px solid #eee; }
+  .filter-btn { padding: 7px 16px; border-radius: 20px; border: 1.5px solid #ddd; background: #fff; font-size: 13px; cursor: pointer; color: #555; white-space: nowrap; font-weight: 500; transition: all 0.15s; }
+  .filter-btn.active { background: #FF6B35; border-color: #FF6B35; color: #fff; }
+  .container { max-width: 600px; margin: 0 auto; padding: 1rem; }
+  .grid { display: flex; flex-direction: column; gap: 12px; }
+  .card { background: #fff; border-radius: 12px; border: 1px solid #eee; padding: 14px; display: flex; gap: 14px; align-items: center; text-decoration: none; color: inherit; transition: border-color 0.15s; }
+  .card:hover { border-color: #FF6B35; }
+  .card-img { width: 72px; height: 72px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: #f5f5f5; }
+  .card-info { flex: 1; min-width: 0; }
+  .card-cat { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .card-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .card-price { font-size: 18px; font-weight: 700; color: #FF6B35; }
+  .card-date { font-size: 11px; color: #aaa; margin-top: 3px; }
+  .badge-new { display: inline-block; background: #FFF0E8; color: #FF6B35; font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 700; margin-left: 6px; vertical-align: middle; }
+  .card-arrow { color: #ccc; font-size: 20px; flex-shrink: 0; }
+  .empty { text-align: center; padding: 3rem; color: #aaa; font-size: 15px; }
+  .footer { text-align: center; padding: 2rem; font-size: 12px; color: #bbb; }
+  @media (max-width: 480px) { .card-title { font-size: 13px; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="avatar">🛍️</div>
+  <h1>Ofertadex</h1>
+  <p class="bio">Melhores ofertas da Amazon todo dia 🔥</p>
+  <div class="social">
+    <a href="https://instagram.com/ofertadex" target="_blank">Instagram</a>
+    <a href="https://facebook.com/ofertadex1" target="_blank">Facebook</a>
+  </div>
+</div>
+
+<div class="filters" id="filters">
+  <button class="filter-btn active" onclick="filtrar('Todos')">Todos</button>
+</div>
+
+<div class="container">
+  <div class="grid" id="grid"></div>
+  <p class="empty" id="empty" style="display:none">Nenhum produto nesta categoria.</p>
+</div>
+
+<div class="footer">ofertadex.github.io — Atualizado automaticamente pelo Make</div>
+
+<script>
+let produtos = [];
+let categoriaAtiva = 'Todos';
+
+async function carregar() {
+  try {
+    const r = await fetch('produtos.json?t=' + Date.now());
+    produtos = await r.json();
+    renderFiltros();
+    renderProdutos();
+  } catch(e) {
+    document.getElementById('empty').style.display = 'block';
+    document.getElementById('empty').textContent = 'Carregando produtos...';
+  }
+}
+
+function renderFiltros() {
+  const cats = ['Todos', ...new Set(produtos.map(p => p.categoria).filter(Boolean))];
+  const el = document.getElementById('filters');
+  el.innerHTML = cats.map(c =>
+    `<button class="filter-btn ${c === categoriaAtiva ? 'active' : ''}" onclick="filtrar('${c}')">${c}</button>`
+  ).join('');
+}
+
+function filtrar(cat) {
+  categoriaAtiva = cat;
+  renderFiltros();
+  renderProdutos();
+}
+
+function diasAtras(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  const diff = Math.floor((Date.now() - d) / 86400000);
+  if (diff === 0) return 'Hoje';
+  if (diff === 1) return 'Ontem';
+  return diff + ' dias atrás';
+}
+
+function renderProdutos() {
+  const lista = categoriaAtiva === 'Todos' ? produtos : produtos.filter(p => p.categoria === categoriaAtiva);
+  const grid = document.getElementById('grid');
+  const empty = document.getElementById('empty');
+  if (lista.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    empty.textContent = 'Nenhum produto nesta categoria.';
+    return;
+  }
+  empty.style.display = 'none';
+  const hoje = diasAtras(lista[0]?.published_at) === 'Hoje';
+  grid.innerHTML = lista.map((p, i) => `
+    <a class="card" href="${p.affiliate_url}" target="_blank">
+      <img class="card-img" src="${p.imagem_url}" alt="${p.titulo}" onerror="this.src='https://placehold.co/72x72/f5f5f5/aaa?text=IMG'" />
+      <div class="card-info">
+        <p class="card-cat">${p.categoria || 'Oferta'}</p>
+        <p class="card-title">${p.titulo}${i === 0 && hoje ? '<span class="badge-new">NOVO</span>' : ''}</p>
+        <p class="card-price">R$ ${(p.preco_cent / 100).toFixed(2).replace('.', ',')}</p>
+        <p class="card-date">${diasAtras(p.published_at)}</p>
+      </div>
+      <span class="card-arrow">›</span>
+    </a>
+  `).join('');
+}
+
+carregar();
+</script>
+</body>
+</html>
