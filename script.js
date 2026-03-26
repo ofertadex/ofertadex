@@ -129,10 +129,14 @@ function appendPagina() {
 
   grid.appendChild(frag);
   paginaAtual++;
-  carregando = false;
 
   if (paginaAtual * PAGE_SIZE < filtrados.length) {
-    inserirSentinel();
+    requestAnimationFrame(() => {
+      carregando = false;
+      inserirSentinel();
+    });
+  } else {
+    carregando = false;
   }
 }
 
@@ -173,6 +177,11 @@ buscaInput.addEventListener('input', () => {
 });
 
 /* ── carrega JSON ── */
+grid.innerHTML = `<div class="loading-state">
+  <div class="spinner"></div>
+  <p>Carregando ofertas…</p>
+</div>`;
+
 fetch('https://opensheet.elk.sh/1tD4G3BqFdVzh5ZkZPUIP1V-HCI__j_WPGdSFqmi7n64/Publicados')
   .then(r => {
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
